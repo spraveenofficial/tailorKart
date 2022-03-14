@@ -78,17 +78,9 @@ class Controller {
         email: user.email,
       },
     });
-
-    // const user = await userModel.findOne({ _id: id });
-    // return res.json({
-    //   success: true,
-    //   message: "User successfully retreived",
-    //   statusCode: 200,
-    //   data: {
-    //     name: user.name,
-    //     email: user.email,
-    //   },
-    // });
+  }
+  async categoryWise(req, res) {
+    
   }
 }
 
