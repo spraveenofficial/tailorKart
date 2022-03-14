@@ -65,8 +65,14 @@ export const loadUser = async (dispatch) => {
         token: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    dispatch({ type: USER_LOAD_SUCCESS, payload: data.data });
+    if (!data.success) {
+      localStorage.removeItem("token");
+      dispatch({ type: USER_LOAD_FAILURE });
+    } else {
+      dispatch({ type: USER_LOAD_SUCCESS, payload: data.data });
+    }
   } catch (error) {
+    localStorage.removeItem("token");
     dispatch({ type: USER_LOAD_FAILURE });
   }
 };
