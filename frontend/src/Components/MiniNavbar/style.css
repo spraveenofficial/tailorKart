@@ -1,0 +1,40 @@
+/* Styles for Mini Map */
+.mini-nav {
+  background: var(--gray-color);
+  height: 2.2rem;
+  align-items: center;
+}
+
+.mini-nav-container {
+  margin: 0 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+.nav-logo {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.nav-logo img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.mini-nav-container .nav-items {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mini-nav-container .nav-items p {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .mini-nav-container {
+    margin: 0 1rem;
+  }
+}
