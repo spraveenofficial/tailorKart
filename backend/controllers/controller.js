@@ -1,5 +1,6 @@
 import userModel from "../models/user.js";
 import token from "../services/token-services.js";
+import productModel from "../models/products.js";
 class Controller {
   async signup(req, res) {
     const { name, email, password } = req.body;
@@ -79,8 +80,50 @@ class Controller {
       },
     });
   }
-  async categoryWise(req, res) {
-    
+  async categoryWiseProducts(req, res) {
+    const { category } = req.params;
+    const regex = new RegExp(category, "i");
+    const products = await productModel.find({ category: regex });
+    products.length === 0
+      ? res.status(400).json({
+          message: "No products found",
+          statusCode: 400,
+          success: false,
+        })
+      : res
+          .status(200)
+          .json({ message: "Products found", statusCode: 200, data: products });
+  }
+  async addProduct(req, res) {
+    const {
+      title,
+      description,
+      price,
+      category,
+      subCategory,
+      image,
+    } = req.body;
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !category ||
+      !subCategory ||
+      !image
+    ) {
+      return res.status(400).json({
+        message: "Please fill all the fields",
+        statusCode: 400,
+        success: false,
+      });
+    }
+    const newProduct = await productModel.create(req.body);
+    return res.status(200).json({
+      message: "Product added successfully",
+      statusCode: 200,
+      success: true,
+      data: newProduct,
+    });
   }
 }
 

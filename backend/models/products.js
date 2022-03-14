@@ -13,14 +13,18 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  discount: {
+    type: Number,
+  },
+  originalPrice: {
+    type: Number,
+  },
   inStock: {
     type: Boolean,
     required: true,
-    max: 50,
   },
   fastDelivery: {
     type: Boolean,
-    required: true,
   },
   category: {
     type: String,
