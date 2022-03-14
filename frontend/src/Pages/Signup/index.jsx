@@ -1,8 +1,13 @@
 import "./style.css";
 import Input from "../../Components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSignup } from "../../Hooks/auth";
+import { signupUser } from "../../Actions/auth";
+import Spinner from "../../Components/Spinner";
+import Toast from "../../Components/Toast";
 const Signup = () => {
+  const { loading, success, message, dispatch } = useSignup();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -11,7 +16,22 @@ const Signup = () => {
   const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
   };
-  console.log(userData);
+  const handleSignup = () => {
+    signupUser(
+      {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      },
+      dispatch
+    );
+  };
+  useEffect(() => {
+    success === true &&
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+  }, [success]);
   return (
     <div className="login-page">
       <div className="login">
@@ -53,7 +73,9 @@ const Signup = () => {
               <br />
             </div>
           </div>
-          <button className="btn">Signup</button>
+          <button onClick={() => handleSignup()} className="btn loading-btn">
+            {loading && <Spinner />} Signup
+          </button>
           <div className="have-account flex">
             <Link to="/login">
               <p>Alreay have Account?</p>
@@ -61,6 +83,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      {!loading && message && <Toast message={message} success={success} />}
     </div>
   );
 };

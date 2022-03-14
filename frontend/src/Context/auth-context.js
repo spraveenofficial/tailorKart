@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        setUser: dispatch,
+        dispatch,
       }}
     >
       {children}

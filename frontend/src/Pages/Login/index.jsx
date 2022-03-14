@@ -1,8 +1,13 @@
 import "./style.css";
 import Input from "../../Components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { loginUser } from "../../Actions/auth";
+import { useLogin } from "../../Hooks/auth";
+import Spinner from "../../Components/Spinner";
+import Toast from "../../Components/Toast";
 const Login = () => {
+  const { loading, success, message, dispatch } = useLogin();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -10,7 +15,15 @@ const Login = () => {
   const handleChange = (event) => {
     setUserData({ ...userData, [event.target.name]: event.target.value });
   };
-  console.log(userData);
+  const handleSubmit = () => {
+    loginUser({ email: userData.email, password: userData.password }, dispatch);
+  };
+  useEffect(() => {
+    success === true &&
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+  }, [success]);
   return (
     <div className="login-page">
       <div className="login">
@@ -48,7 +61,9 @@ const Login = () => {
               <p>Forgot Password?</p>
             </div>
           </div>
-          <button className="btn">Login</button>
+          <button onClick={() => handleSubmit()} className="btn loading-btn">
+            {loading && <Spinner />} Login
+          </button>
           <div className="have-account flex">
             <Link to="/signup">
               <p>Create New Account</p>
@@ -57,6 +72,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {!loading && message && <Toast message={message} success={success} />}
     </div>
   );
 };

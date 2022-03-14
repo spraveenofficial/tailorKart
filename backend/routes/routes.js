@@ -4,6 +4,6 @@ import middleware from "../middlewares/middleware.js";
 const app = Router();
 
 app.post("/signup", Controller.signup);
-app.get("/login", Controller.login);
+app.post("/login", Controller.login);
 app.get("/verify", middleware, Controller.verifyUser);
 export default app;
