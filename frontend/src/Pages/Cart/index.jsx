@@ -12,6 +12,18 @@ const Cart = ({ onNext }) => {
     console.log("called");
     setCart({ type: "DECREASE_QUANTITY", payload: item });
   };
+  const totalOriginalPrice = cart.reduce((acc, item) => {
+    return acc + Number(item.originalPrice) * Number(item.quantity);
+  }, 0);
+  const totalDiscount = cart.reduce((acc, item) => {
+    return (
+      acc +
+      (Number(item.originalPrice) - Number(item.price)) * Number(item.quantity)
+    );
+  }, 0);
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + Number(item.price) * Number(item.quantity);
+  }, 0);
   return cart.length === 0 ? (
     <div className="error-page">
       <h1>Your cart is Empty.</h1>
@@ -24,24 +36,25 @@ const Cart = ({ onNext }) => {
       <div className="cart-div">
         <div className="cart-left-item">
           {cart.map((eachItem) => {
-            const { id, title, price, quantity, image } = eachItem;
+            const { _id, title, price, quantity, image, originalPrice, discount } =
+              eachItem;
             return (
-              <div key={id} className="cart-item-product flex mb-10">
+              <div key={_id} className="cart-item-product flex mb-10">
                 <img src={image} alt="product-img" />
                 <div className="cart-item-data flex">
                   <p>{title}</p>
                   <section className="flex text-center align-center">
                     <h3 className="mr-10">₹ {price}</h3>
-                    <p className="text-gray text-cross">₹ 400</p>
+                    <p className="text-gray ml-10 text-cross">₹ {originalPrice}</p>
                   </section>
-                  <h2 className="text-gray">50% off</h2>
+                  <h2 className="text-gray">{discount}% off</h2>
                   <div className="quantity-div flex mb-10">
                     <p>Quantity:</p>
                     <i
                       onClick={() => handleDecrease(eachItem)}
                       className="fa-solid fa-minus"
                     ></i>
-                    <input type="number" defaultValue={quantity} />
+                    <input type="number" value={quantity} />
                     <i
                       onClick={() => handleIncrease(eachItem)}
                       className="fa-solid fa-plus"
@@ -66,12 +79,12 @@ const Cart = ({ onNext }) => {
             </strong>
             <hr />
             <div className="rate-justify">
-              <p>Price(2 items)</p>
-              <p>₹4999</p>
+              <p>Price({totalItems} items)</p>
+              <p>₹{totalOriginalPrice}</p>
             </div>
             <div className="rate-justify">
               <p>Discount</p>
-              <p>- ₹1999</p>
+              <p>- ₹{totalDiscount}</p>
             </div>
             <div className="rate-justify">
               <p>Delivery Charges</p>
@@ -83,7 +96,7 @@ const Cart = ({ onNext }) => {
                 <p>TOTAL AMOUNT</p>
               </strong>
               <strong>
-                <p>₹{price}</p>
+                <p>₹{totalPrice}</p>
               </strong>
             </div>
             <hr className="mb-10" />

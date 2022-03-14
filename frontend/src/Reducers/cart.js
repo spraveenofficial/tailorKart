@@ -10,16 +10,15 @@ export const cartReducer = (state, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       let productArr = state.cart;
-      const item = productArr.find((item) => item.id === action.payload.id);
+      const item = productArr.find((item) => item._id === action.payload._id);
       if (!item) {
         productArr = [...productArr, { ...action.payload, quantity: 1 }];
       } else {
         productArr = productArr.map((product) => {
-          if (action.payload.id === product.id) {
+          if (action.payload._id === product._id) {
             product = {
               ...product,
               quantity: product.quantity + 1,
-              price: product.price + action.payload.price,
             };
           }
           return product;
@@ -29,29 +28,27 @@ export const cartReducer = (state, action) => {
       state.cart = productArr;
       return {
         ...state,
+        cart: productArr,
         totalItems: state.totalItems + 1,
-        price: state.price + action.payload.price,
       };
     case REMOVE_FROM_CART:
       let productData = state.cart;
       productData = productData.filter(
-        (product) => product.id !== action.payload.id
+        (product) => product._id !== action.payload._id
       );
       localStorage.setItem("cart", JSON.stringify(productData));
       state.cart = productData;
       return {
         ...state,
-        totalItems: state.totalItems - 1,
-        price: state.price - action.payload.price,
+        totalItems: state.totalItems - action.payload.quantity,
       };
     case INCREASE_QUANTITY:
       let productData1 = state.cart;
       productData1 = productData1.map((product) => {
-        if (action.payload.id === product.id) {
+        if (action.payload._id === product._id) {
           product = {
             ...product,
             quantity: product.quantity + 1,
-            price: product.price + action.payload.price,
           };
         }
         return product;
@@ -61,16 +58,14 @@ export const cartReducer = (state, action) => {
       return {
         ...state,
         totalItems: state.totalItems + 1,
-        price: state.price + action.payload.price,
       };
     case DECREASE_QUANTITY:
       let productData2 = state.cart;
       productData2 = productData2.map((product) => {
-        if (action.payload.id === product.id) {
+        if (action.payload._id === product._id) {
           product = {
             ...product,
-            quantity: product.quantity - 1,
-            price: product.price - action.payload.price,
+            quantity: product.quantity - 1 < 1 ? 1 : product.quantity - 1,
           };
         }
         return product;
@@ -79,8 +74,7 @@ export const cartReducer = (state, action) => {
       state.cart = productData2;
       return {
         ...state,
-        totalItems: state.totalItems - 1,
-        price: state.price - action.payload.price,
+        totalItems: state.totalItems - 1 < 1 ? 1 : state.totalItems - 1,
       };
     default:
       return state;
