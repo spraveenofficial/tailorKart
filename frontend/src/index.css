@@ -91,6 +91,9 @@ a {
 .pointer {
   cursor: pointer;
 }
+.btn {
+  font-family: inherit;
+}
 .text-center {
   text-align: center;
 }

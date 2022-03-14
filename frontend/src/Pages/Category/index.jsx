@@ -2,11 +2,13 @@ import "./style.css";
 import { useParams } from "react-router-dom";
 import { useProduct } from "../../Context/product-context";
 import { useEffect, useState } from "react";
-import { loadProducts } from "../../Actions/products";
+import { loadProductsByCategory } from "../../Actions/products";
 import Loader from "../../Components/Loader";
 import { PriceSort } from "../../Components/PriceSort";
 import { useCart } from "../../Context/cart-context";
+import NotFoundPage from "../404";
 import {
+  CLEAR_ALL_FILTERS,
   PRODUCT_HIGH_TO_LOW,
   PRODUCT_LOW_TO_HIGH,
 } from "../../Constants/products";
@@ -14,10 +16,19 @@ const Category = () => {
   const [radioInputValue, setRadioInputValue] = useState(null);
   const { category } = useParams();
   const { setCart } = useCart();
-  const { products, loading, dispatch } = useProduct();
+  const { success, products, loading, dispatch } = useProduct();
   useEffect(() => {
-    loadProducts(category, dispatch);
+    loadProductsByCategory(category, dispatch);
+    return () => {
+      dispatch({ type: "SET_CATEGORY_PRODUCTS_NULL" });
+    };
   }, []);
+
+  function HandleClearFunction() {
+    console.log("Called");
+    // setRadioInputValue(null);
+    dispatch({ type: CLEAR_ALL_FILTERS });
+  }
 
   function changeRadioInputvalue(e) {
     const inputValue = e.target.value;
@@ -31,12 +42,14 @@ const Category = () => {
   };
   return loading ? (
     <Loader />
-  ) : (
+  ) : success ? (
     <div className="products-page">
       <div className="filter">
         <div className="filter-heading flex justify-between">
           <p>Filters</p>
-          <p className="pointer">Clear all</p>
+          <p onClick={() => HandleClearFunction()} className="pointer">
+            Clear all
+          </p>
         </div>
         <div className="all-filter">
           <div className="filter-section mt-10">
@@ -111,6 +124,8 @@ const Category = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <NotFoundPage />
   );
 };
 

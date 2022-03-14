@@ -7,7 +7,6 @@ import { useAuth } from "../../Context/auth-context";
 const Navbar = () => {
   // This is Hook for Authentication.
   const { isAuthenticated } = useAuth();
-  console.log(isAuthenticated);
   const navigate = useNavigate();
   const { totalItems } = useCart();
   const [deviceType, setDeviceType] = useState("desktop");

@@ -1,23 +1,22 @@
 import { createContext, useContext, useReducer } from "react";
-import { productReducer } from "../Reducers/products";
+import { productsByCategory } from "../Reducers/products";
 import { compose, sortedPrice } from "../Utils/products";
 const ProductContext = createContext();
 
 const ProductProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(productReducer, {
+  const [state, dispatch] = useReducer(productsByCategory, {
     loading: false,
     product: [],
+    success: false,
     error: false,
-    sort_price: null,
-    inStock: null,
-    sort_by_fast_delivery: null,
+    sort_price: "normal",
+    maxPrice: 5000
   });
-  const { loading, error, product } = state;
+  const { success, loading, error, product } = state;
   const filteredProducts = compose(state, sortedPrice)(product);
-
   return (
     <ProductContext.Provider
-      value={{ loading, error, products: filteredProducts, dispatch }}
+      value={{ loading, success, error, products: filteredProducts, dispatch }}
     >
       {children}
     </ProductContext.Provider>

@@ -7,7 +7,7 @@ const name = [
   },
   {
     id: 2,
-    title: "Mens",
+    title: "Men",
     link: "/",
     image: "./images/men.png",
   },

@@ -9,11 +9,13 @@ const Cart = ({ onNext }) => {
     setCart({ type: "INCREASE_QUANTITY", payload: item });
   };
   const handleDecrease = (item) => {
-      console.log("called")
+    console.log("called");
     setCart({ type: "DECREASE_QUANTITY", payload: item });
   };
   return cart.length === 0 ? (
-    <div>No items in cart</div>
+    <div className="error-page">
+      <h1>Your cart is Empty.</h1>
+    </div>
   ) : (
     <div className="cart-page">
       <div className="cart-header">
