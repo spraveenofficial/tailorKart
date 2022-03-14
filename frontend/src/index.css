@@ -112,6 +112,9 @@ a {
 .mt-20 {
   margin-top: 1.25rem;
 }
+.ml-10 {
+  margin-left: 0.625rem;
+}
 .inherit-font {
   font-family: inherit;
 }

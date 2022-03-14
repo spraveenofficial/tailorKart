@@ -12,8 +12,11 @@ import {
   PRODUCT_HIGH_TO_LOW,
   PRODUCT_LOW_TO_HIGH,
 } from "../../Constants/products";
+import PriceRange from "../../Components/PriceSort/price-range";
+import ProductCard from "../../Components/ProductCard";
 const Category = () => {
   const [radioInputValue, setRadioInputValue] = useState(null);
+  const [pricerange, setPriceRange] = useState(null);
   const { category } = useParams();
   const { setCart } = useCart();
   const { success, products, loading, dispatch } = useProduct();
@@ -21,12 +24,12 @@ const Category = () => {
     loadProductsByCategory(category, dispatch);
     return () => {
       dispatch({ type: "SET_CATEGORY_PRODUCTS_NULL" });
+      HandleClearFunction();
     };
   }, []);
-
   function HandleClearFunction() {
-    console.log("Called");
-    // setRadioInputValue(null);
+    setRadioInputValue(null);
+    setPriceRange(null);
     dispatch({ type: CLEAR_ALL_FILTERS });
   }
 
@@ -37,12 +40,26 @@ const Category = () => {
     else dispatch({ type: PRODUCT_LOW_TO_HIGH });
     setRadioInputValue(inputValue);
   }
+  function changeRangeValue(e) {
+    setRadioInputValue(null);
+    const inputValue = e.target.value;
+    if (inputValue === "below-500") {
+      dispatch({ type: "PRICE_BELOW_500" });
+    } else if (inputValue === "500-999") {
+      dispatch({ type: "PRICE_BETWEEN_500_AND_999" });
+    } else if (inputValue === "1000-4999") {
+      dispatch({ type: "PRICE_BETWEEN_1000_AND_4999" });
+    } else if (inputValue === "above-5000") {
+      dispatch({ type: "PRICE_5000_PLUS" });
+    }
+    setPriceRange(inputValue);
+  }
   const addToCart = (product) => {
     setCart({ type: "ADD_TO_CART", payload: product });
   };
   return loading ? (
     <Loader />
-  ) : success ? (
+  ) : !loading && success ? (
     <div className="products-page">
       <div className="filter">
         <div className="filter-heading flex justify-between">
@@ -61,18 +78,10 @@ const Category = () => {
           </div>
           <div className="filter-section mt-10">
             <p className="text-bold">Price Range</p>
-            <label className="filters filter-block">
-              <input type="radio" /> Below 500
-            </label>
-            <label className="filters filter-block">
-              <input type="radio" /> 500 - 999
-            </label>
-            <label className="filters filter-block">
-              <input type="radio" /> 1000 - 4999
-            </label>
-            <label className="filters filter-block">
-              <input type="radio" /> 5000 +
-            </label>
+            <PriceRange
+              rangeValue={pricerange}
+              changeRangeValue={changeRangeValue}
+            />
           </div>
           <div className="filter-section mt-10">
             <p className="text-bold">Rating</p>
@@ -90,37 +99,25 @@ const Category = () => {
           </div>
         </div>
       </div>
-      <div className="product-page text-center">
-        <h1>Products</h1>
+      <div className="product-page">
+        <h2 className="ml-10 category-title">
+          {category.toLocaleUpperCase()} Stores{" "}
+          <span>Showing all ({products.length}) products</span>
+        </h2>
         <div className="products">
-          {products.length > 0 &&
-            products.map((product) => {
-              const { id, title, image, price } = product;
-              return (
-                <div key={id} id="card" className="card ecom">
-                  <div className="product-image">
-                    <img src={image} alt="image" />
-                  </div>
-                  <div className="cart-badge">
-                    <button className="ico">
-                      <i className="fa fa-heart-o" aria-hidden="true"></i>
-                    </button>
-                    <div className="card-text">{title}</div>
-                    <div className="card-price">
-                      <span className="price-now"> Rs. {price}</span>
-                      <span className="price-before">Rs. 90,000</span>
-                      <span className="discount">(22% Off)</span>
-                    </div>
-                    <button
-                      onClick={() => addToCart(product)}
-                      className="btn btn-primary"
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          {products.length > 0
+            ? products.map((product) => {
+                return (
+                  <ProductCard
+                    product={product}
+                    key={product._id}
+                    addToCart={addToCart}
+                  />
+                );
+              })
+            : products && (
+                <h1>Products Not Available According to Your Filter</h1>
+              )}
         </div>
       </div>
     </div>

@@ -11,7 +11,8 @@ import { useAuth } from "./Context/auth-context";
 import Loader from "./Components/Loader";
 import { loadUser, nullUser } from "./Actions/auth";
 import { useEffect } from "react";
-import { GuestRoutes } from "./Utils/routes";
+import { GuestRoutes, ProtectedRoutes } from "./Utils/routes";
+import Help from "./Pages/Help";
 function App() {
   const { loading, dispatch } = useAuth();
   const token = localStorage.getItem("token");
@@ -37,6 +38,9 @@ function App() {
             <Route element={<GuestRoutes />}>
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/help" element={<Help />} />
             </Route>
           </Routes>
         </>
