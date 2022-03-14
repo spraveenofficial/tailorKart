@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/cart-context";
 import { useAuth } from "../../Context/auth-context";
 const Navbar = () => {
+  // This is Hook for Authentication.
   const { isAuthenticated } = useAuth();
   console.log(isAuthenticated);
   const navigate = useNavigate();
