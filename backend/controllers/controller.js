@@ -95,14 +95,8 @@ class Controller {
           .json({ message: "Products found", statusCode: 200, data: products });
   }
   async addProduct(req, res) {
-    const {
-      title,
-      description,
-      price,
-      category,
-      subCategory,
-      image,
-    } = req.body;
+    const { title, description, price, category, subCategory, image } =
+      req.body;
     if (
       !title ||
       !description ||
@@ -124,6 +118,31 @@ class Controller {
       success: true,
       data: newProduct,
     });
+  }
+  async eachProduct(req, res) {
+    const { id } = req.params;
+    try {
+      const product = await productModel.findById(id);
+      if (!product) {
+        return res.status(400).json({
+          message: "Product does not exist",
+          statusCode: 400,
+          success: false,
+        });
+      }
+      return res.status(200).json({
+        message: "Product found",
+        statusCode: 200,
+        success: true,
+        data: product,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "Product does not exist",
+        statusCode: 400,
+        success: false,
+      });
+    }
   }
 }
 

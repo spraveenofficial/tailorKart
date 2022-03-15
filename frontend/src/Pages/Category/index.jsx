@@ -23,6 +23,7 @@ const Category = () => {
   useEffect(() => {
     loadProductsByCategory(category, dispatch);
     return () => {
+      console.log("returning");
       dispatch({ type: "SET_CATEGORY_PRODUCTS_NULL" });
       HandleClearFunction();
     };
@@ -115,14 +116,15 @@ const Category = () => {
                   />
                 );
               })
-            : products && (
+            : success &&
+              products && (
                 <h1>Products Not Available According to Your Filter</h1>
               )}
         </div>
       </div>
     </div>
   ) : (
-    <NotFoundPage />
+    !success && !loading && <NotFoundPage />
   );
 };
 

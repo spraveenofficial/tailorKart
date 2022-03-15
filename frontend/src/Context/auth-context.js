@@ -7,7 +7,7 @@ const useAuth = () => useContext(authContext);
 const AuthProvider = ({ children }) => {
   const initialState = {
     isAuthenticated: false,
-    loading: false,
+    loading: localStorage.getItem("token") ? true : false,
     user: null,
   };
   const [state, dispatch] = useReducer(authReducer, initialState);

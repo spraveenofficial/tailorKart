@@ -84,7 +84,7 @@ const Cart = ({ onNext }) => {
             </div>
             <div className="rate-justify">
               <p>Discount</p>
-              <p>- ₹{totalDiscount}</p>
+              <p>₹{totalDiscount}</p>
             </div>
             <div className="rate-justify">
               <p>Delivery Charges</p>
@@ -96,11 +96,11 @@ const Cart = ({ onNext }) => {
                 <p>TOTAL AMOUNT</p>
               </strong>
               <strong>
-                <p>₹{totalPrice}</p>
+                <p>₹{totalPrice + 499}</p>
               </strong>
             </div>
             <hr className="mb-10" />
-            <p className="mb-10">You will save ₹1999 on this order</p>
+            <p className="mb-10">You will save ₹{totalDiscount} on this order</p>
             <button className="btn btn-primary mb-10">PLACE ORDER</button>
           </div>
         </div>

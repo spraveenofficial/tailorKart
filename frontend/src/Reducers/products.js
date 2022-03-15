@@ -10,6 +10,9 @@ import {
   PRODUCT_HIGH_TO_LOW,
   PRODUCT_LOW_TO_HIGH,
   SET_CATEGORY_PRODUCTS_NULL,
+  LOAD_EACH_PRODUCT,
+  LOAD_EACH_PRODUCT_SUCCESS,
+  LOAD_EACH_PRODUCT_FAIL,
 } from "../Constants/products";
 
 export const productsByCategory = (state, action) => {
@@ -49,6 +52,29 @@ export const productsByCategory = (state, action) => {
       return { ...state, sort_price: "price-between-1000-4999" };
     case PRICE_5000_PLUS:
       return { ...state, sort_price: "price-5000-plus" };
+    default:
+      return state;
+  }
+};
+
+export const eachProduct = (state, action) => {
+  switch (action.type) {
+    case LOAD_EACH_PRODUCT:
+      return { ...state, loading: true, success: false };
+    case LOAD_EACH_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        product: action.payload,
+        loading: false,
+        success: true,
+      };
+    case LOAD_EACH_PRODUCT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+        success: false,
+      };
     default:
       return state;
   }

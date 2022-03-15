@@ -1,13 +1,14 @@
-const useProductsByCategory = () => {
+import { eachProduct } from "../Reducers/products";
+import { useReducer } from "react";
+const useEachProduct = () => {
   const initialState = {
-    products: [],
-    loading: false,
+    product: [],
+    loading: true,
     success: false,
     error: null,
   };
-  const [state, dispatch] = useReducer(productsByCategory, initialState);
-  const { products, loading, success, error } = state;
-  return { products, loading, success, error, dispatch };
+  const [state, dispatch] = useReducer(eachProduct, initialState);
+  const { product, loading, success, error } = state;
+  return { product, loading, success, error, dispatch };
 };
-
-export { useProductsByCategory };
+export { useEachProduct };

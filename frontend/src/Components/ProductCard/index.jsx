@@ -1,15 +1,24 @@
 import { useNavigate } from "react-router-dom";
-
+// import { Redirect } from "react-router-dom";
 const ProductCard = ({ product, addToCart }) => {
-  // const navigate = useNavigate();
-  const { _id, title, price, image, originalPrice, rating, description, discount} = product;
+  const navigate = useNavigate();
+  // Make funtion to redirect from categories to product
+  const redirectToProduct = (path) => {
+    navigate(`/product/${path}`);
+  };
+  const {
+    _id,
+    title,
+    price,
+    image,
+    originalPrice,
+    rating,
+    description,
+    discount,
+  } = product;
   return (
-    <div
-      // onClick={() => navigate(`product/${_id}`)}
-      id="card"
-      className="card ecom"
-    >
-      <div className="product-image">
+    <div id="card" className="card ecom">
+      <div onClick={() => redirectToProduct(_id)} className="product-image">
         <img src={image} alt="image" />
       </div>
       <div className="cart-badge">
