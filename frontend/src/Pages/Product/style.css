@@ -22,12 +22,9 @@
 }
 /* Image size center and no stretch css */
 .product-image .product-bg {
-  background-size: cover;
-  background-position: center top;
-  background-position: center center;
   width: 100%;
   height: 400px;
-  object-fit: none;
+  object-fit: scale-down;
 }
 
 .product-image .indicator {

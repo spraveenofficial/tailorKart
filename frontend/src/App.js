@@ -34,17 +34,20 @@ function App() {
           <MiniNav />
           <Navbar />
           <Routes>
+            {/* This Routes can be Accessed by Every Users. */}
             <Route path="/" exact={true} element={<Home />} />
             <Route path="/categories/:category" element={<Category />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/product/:id" element={<Product />} />
             <Route path="*" element={<NotFoundPage />} />
-            {/* This Routes can be Accessed by Only Unauthenticated Routes */}
+
+            {/* This Routes can be Accessed by Only Unauthenticated Users. */}
             <Route element={<GuestRoutes />}>
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
             </Route>
 
+            {/* This Route can be Accessed by Only Authenticated Users. */}
             <Route element={<ProtectedRoutes />}>
               <Route path="/help" element={<Help />} />
             </Route>
