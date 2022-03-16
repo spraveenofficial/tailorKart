@@ -1,12 +1,16 @@
 import "./style.css";
 import Input from "../../Components/Input";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loginUser } from "../../Actions/auth";
 import { useLogin } from "../../Hooks/auth";
 import Spinner from "../../Components/Spinner";
 import Toast from "../../Components/Toast";
+import { useAuth } from "../../Context/auth-context";
 const Login = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { loading, success, message, dispatch } = useLogin();
   const [userData, setUserData] = useState({
     email: "",

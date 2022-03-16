@@ -8,7 +8,9 @@
   width: 100%;
   margin-bottom: 1rem;
 }
-
+.product-info span{
+  font-size: 13px;
+}
 .group:after {
   content: "";
   display: table;

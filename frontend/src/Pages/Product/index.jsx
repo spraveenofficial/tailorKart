@@ -31,7 +31,7 @@ const Product = () => {
       </div>
       <div className="col-1-2 product-info">
         <h1>{product.title}</h1>
-        <h2>₹{product.price}</h2>
+        <h2>₹{product.price} <span className="price-before">₹{product.originalPrice}</span></h2>
         <div className="select-dropdown">
           <select>
             <option defaultValue="" disabled selected hidden>

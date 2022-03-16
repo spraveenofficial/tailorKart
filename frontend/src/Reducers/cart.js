@@ -1,9 +1,10 @@
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  CLEAR_CART,
   INCREASE_QUANTITY,
   DECREASE_QUANTITY,
+  ADD_TO_WISHLIST,
+  REMOVE_FROM_WISHLIST,
 } from "../Constants/cart";
 
 export const cartReducer = (state, action) => {
@@ -78,5 +79,32 @@ export const cartReducer = (state, action) => {
       };
     default:
       return state;
+  }
+};
+
+export const wishlistReducer = (state, action) => {
+  switch (action.type) {
+    case ADD_TO_WISHLIST:
+      let productArr = state.wishlist;
+      const item = productArr.find((item) => item._id === action.payload._id);
+      if (!item) {
+        productArr = [...productArr, { ...action.payload, quantity: 1 }];
+      }
+      localStorage.setItem("wishlist", JSON.stringify(productArr));
+      state.wishlist = productArr;
+      return {
+        ...state,
+        wishlist: productArr,
+      };
+    case REMOVE_FROM_WISHLIST:
+      let productData = state.wishlist;
+      productData = productData.filter(
+        (product) => product._id !== action.payload._id
+      );
+      localStorage.setItem("wishlist", JSON.stringify(productData));
+      state.wishlist = productData;
+      return {
+        ...state,
+      };
   }
 };
