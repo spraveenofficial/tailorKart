@@ -145,6 +145,7 @@ class Controller {
       });
     }
   }
+  // Add Address.
   async addAddress(req, res) {
     const { id } = req.data;
     try {
