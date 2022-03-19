@@ -78,6 +78,7 @@ class Controller {
         name: user.name,
         email: user.email,
       },
+      address: user.address,
     });
   }
   async categoryWiseProducts(req, res) {
@@ -141,6 +142,33 @@ class Controller {
         message: "Product does not exist",
         statusCode: 400,
         success: false,
+      });
+    }
+  }
+  async addAddress(req, res) {
+    const { id } = req.data;
+    try {
+      userModel
+        .updateOne(
+          { _id: id },
+          {
+            $push: {
+              completedQuiz: {
+                $each: [req.body],
+              },
+            },
+          }
+        )
+        .exec()
+        .then((response) => {
+          return res.json({
+            message: "Suceesfully Updated",
+          });
+        });
+    } catch (error) {
+      return res.json({
+        message: "Data retreived",
+        data: error,
       });
     }
   }
